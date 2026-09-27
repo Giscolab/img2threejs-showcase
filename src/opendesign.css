@@ -6411,3 +6411,56 @@ body,
     transition: none !important;
   }
 }
+
+/* Local stability patch: flatten Archive cards to avoid Edge compositor overlap. */
+.archive-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  perspective: none;
+}
+
+.archive-grid.is-filtered .archive-card:nth-child(n),
+.archive-card,
+.archive-card:nth-child(n),
+.archive-card:nth-child(6n + 1),
+.archive-card:nth-child(6n + 4),
+.archive-card:nth-child(6n + 5) {
+  grid-column: auto;
+  min-height: 28rem;
+  perspective: none;
+}
+
+.archive-card-surface,
+.archive-card:nth-child(6n + 1) .archive-card-surface,
+.archive-card:nth-child(6n + 4) .archive-card-surface,
+.archive-card:nth-child(6n + 5) .archive-card-surface {
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(16rem, 1fr) auto;
+  transform: none !important;
+  transform-style: flat;
+  will-change: auto;
+}
+
+.archive-image {
+  transform-style: flat;
+}
+
+.archive-model-stage,
+.archive-card:hover .archive-model-stage,
+.archive-card:focus-visible .archive-model-stage {
+  transform: none !important;
+  transform-style: flat;
+}
+
+.archive-card-surface::before {
+  display: none;
+}
+
+@media (max-width: 1050px) {
+  .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .archive-grid { grid-template-columns: 1fr; }
+  .archive-card,
+  .archive-card:nth-child(n) { min-height: 26rem; }
+}
